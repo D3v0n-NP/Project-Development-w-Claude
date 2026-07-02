@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in — Hawker Hub</title>
+    <meta
+      name="description"
+      content="Sign in to Hawker Hub, the Singapore Hawker Centre Management System, or create a customer or vendor account."
+    />
+
+    <link rel="stylesheet" href="./css/styles.css" />
+
+    <script src="./js/main.js" defer></script>
+    <script src="./js/auth.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#login-card">Skip to sign in</a>
+
+    <main class="login">
+      <section class="login-brand">
+        <div class="login-brand__top">
+          <a href="./index.html">
+            <span class="brand__mark">H</span>
+            <span class="brand__name">Hawker Hub<span>SHCMS</span></span>
+          </a>
+        </div>
+
+        <div>
+          <h1 class="login-brand__headline">
+            Run the <em>whole hawker centre</em> from one sign-in.
+          </h1>
+          <p class="login-brand__sub">
+            Patrons, stall owners, operators and NEA officers — one account for
+            menus, orders, feedback and hygiene inspections.
+          </p>
+
+          <div class="login-brand__badge-wrap">
+            <div
+              class="grade-badge"
+              aria-hidden="true"
+              style="background: var(--color-green-700)"
+            >
+              <div>
+                <div class="grade-badge__grade">A</div>
+                <div class="grade-badge__label">NEA Hygiene Grade</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="login-brand__roles">
+            <span class="login-chip">Patrons</span>
+            <span class="login-chip">Vendors</span>
+            <span class="login-chip">Operators</span>
+            <span class="login-chip">NEA</span>
+          </div>
+        </div>
+
+        <p class="login-brand__foot">
+          © <span id="year">2026</span> Hawker Hub · Student project ·
+          <a href="./credit.html">Credits</a>
+        </p>
+      </section>
+
+      <section class="login-form-area">
+        <div class="login-card" id="login-card">
+          <h2 class="login-card__title">Welcome to Hawker Hub</h2>
+          <p class="login-card__sub">
+            Sign in to your account, or create a new one to get started.
+          </p>
+
+          <div class="tabs" data-tabs>
+            <button class="tab is-active" type="button" data-tab="signin">
+              Sign in
+            </button>
+            <button class="tab" type="button" data-tab="register">
+              Create account
+            </button>
+          </div>
+
+          <div class="tab-panel" data-panel="signin">
+            <form class="form" id="login-form" novalidate>
+              <div
+                class="alert is-hidden"
+                id="login-feedback"
+                aria-live="polite"
+              ></div>
+
+              <div class="field">
+                <label class="field__label" for="login-email">Email</label>
+                <input
+                  class="input"
+                  id="login-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="login-password"
+                  >Password</label
+                >
+                <div class="password">
+                  <input
+                    class="input password__input"
+                    id="login-password"
+                    name="password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Your password"
+                  />
+                  <button
+                    class="password__toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button>
+                </div>
+                <span
+                  class="field__hint field__hint--caps is-hidden"
+                  data-caps-hint
+                  >Caps Lock is on</span
+                >
+              </div>
+
+              <button class="btn btn--primary btn--block" type="submit">
+                Sign in
+              </button>
+            </form>
+          </div>
+
+          <div class="tab-panel is-hidden" data-panel="register">
+            <form class="form" id="register-form" novalidate>
+              <div
+                class="alert is-hidden"
+                id="register-feedback"
+                aria-live="polite"
+              ></div>
+
+              <div class="field">
+                <label class="field__label" for="reg-role">I am a…</label>
+                <select class="select" id="reg-role" name="role">
+                  <option value="customer">Customer</option>
+                  <option value="vendor">Vendor (stall owner)</option>
+                </select>
+                <span class="field__hint"
+                  >NEA officer and operator accounts are issued
+                  internally.</span
+                >
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="reg-name">Full name</label>
+                <input
+                  class="input"
+                  id="reg-name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  placeholder="Your name"
+                />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="reg-email">Email</label>
+                <input
+                  class="input"
+                  id="reg-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="reg-password">Password</label>
+                <div class="password">
+                  <input
+                    class="input password__input"
+                    id="reg-password"
+                    name="password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="At least 8 characters"
+                  />
+                  <button
+                    class="password__toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button>
+                </div>
+                <span class="field__hint">Use at least 8 characters.</span>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="reg-confirm"
+                  >Confirm password</label
+                >
+                <input
+                  class="input"
+                  id="reg-confirm"
+                  name="confirm"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Re-enter your password"
+                />
+              </div>
+
+              <button class="btn btn--primary btn--block" type="submit">
+                Create account
+              </button>
+            </form>
+          </div>
+          <div class="dev-links">
+            <p class="dev-links__label">
+              Demo logins · dev only — remove before submission
+            </p>
+            <div class="dev-links__row">
+              <button
+                class="btn btn--outline btn--sm"
+                type="button"
+                data-demo-role="customer"
+              >
+                Customer
+              </button>
+              <button
+                class="btn btn--outline btn--sm"
+                type="button"
+                data-demo-role="vendor"
+              >
+                Vendor
+              </button>
+              <button
+                class="btn btn--outline btn--sm"
+                type="button"
+                data-demo-role="nea"
+              >
+                NEA officer
+              </button>
+              <button
+                class="btn btn--outline btn--sm"
+                type="button"
+                data-demo-role="operator"
+              >
+                Operator
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hawker Hub — Singapore Hawker Centre Management System</title>
+    <meta
+      name="description"
+      content="One platform connecting patrons, stall owners, operators and NEA officers — menus, orders, feedback and hygiene inspections in a single system."
+    />
+
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="./js/main.js" defer></script>
+  </head>
+
+  <!-- body.lp turns this one page dark; interior pages stay light. -->
+  <body class="lp">
+    <a class="skip-link" href="#lp-main">Skip to content</a>
+
+    <!-- ============================ NAV ============================ -->
+    <header class="lp-nav">
+      <div class="container lp-nav__inner">
+        <a class="brand" href="./index.html" aria-label="Hawker Hub home">
+          <span class="brand__mark">H</span>
+          <span class="brand__name">Hawker Hub<span>SHCMS</span></span>
+        </a>
+        <nav class="lp-nav__links" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#roles">Who it's for</a>
+          <a href="./credit.html">Credits</a>
+        </nav>
+        <a class="btn btn--primary btn--sm" href="./login.html">Sign in</a>
+      </div>
+    </header>
+
+    <main id="lp-main">
+      <!-- ============================ HERO ============================ -->
+      <section class="lp-hero">
+        <img
+          class="lp-hero__bg"
+          src="./assets/images/ethan-hu-NRTptNBkLLw-unsplash.jpg"
+          alt="A Singapore hawker centre busy at night with the CBD towers behind it"
+        />
+        <div class="lp-hero__scrim" aria-hidden="true"></div>
+        <p class="lp-hero__credit">Photo: Ethan Hu / Unsplash</p>
+
+        <div class="container lp-hero__content">
+          <h1 class="lp-wordmark">Hawker Hub</h1>
+
+          <p class="lp-hero__tagline">
+            One platform connecting patrons, stall owners, operators and NEA
+            officers — menus, orders, feedback and hygiene inspections in one
+            place.
+          </p>
+
+          <div class="lp-hero__actions">
+            <div class="lp-hero__pills">
+              <span class="lp-pill-sm">Patrons</span>
+              <span class="lp-pill-sm">Vendors</span>
+              <span class="lp-pill-sm">Operators</span>
+              <span class="lp-pill-sm">NEA</span>
+            </div>
+            <a class="btn btn--primary" href="./login.html">Sign in</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================== FEATURES ========================== -->
+      <section class="lp-section" id="features">
+        <div class="container">
+          <p class="lp-eyebrow">What it does</p>
+          <h2 class="lp-section__title">
+            From the kitchen to the inspection report
+          </h2>
+          <div class="lp-feature-grid">
+            <article class="lp-feature">
+              <div class="lp-feature__icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 11h18" />
+                  <path d="M4 11a8 8 0 0 0 16 0" />
+                  <path d="M8 11V8M12 11V6.5M16 11V8" />
+                </svg>
+              </div>
+              <h3 class="lp-feature__title">Menus &amp; ordering</h3>
+              <p class="lp-feature__text">
+                Browse stalls, order dishes across cuisines, and keep every
+                order in one cart and history.
+              </p>
+            </article>
+            <article class="lp-feature">
+              <div class="lp-feature__icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21 11.5a8 8 0 0 1-11.7 7.1L4 20l1.4-5.3A8 8 0 1 1 21 11.5Z"
+                  />
+                </svg>
+              </div>
+              <h3 class="lp-feature__title">Feedback &amp; complaints</h3>
+              <p class="lp-feature__text">
+                Ratings, comments and complaints route straight to the right
+                stall, giving a clear satisfaction view.
+              </p>
+            </article>
+            <article class="lp-feature">
+              <div class="lp-feature__icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="5" y="4" width="14" height="17" rx="2" />
+                  <path
+                    d="M9 4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6H9Z"
+                  />
+                  <path d="M8.5 13l2.2 2.2L15 11" />
+                </svg>
+              </div>
+              <h3 class="lp-feature__title">Hygiene &amp; inspections</h3>
+              <p class="lp-feature__text">
+                Officers log scores and remarks; each stall's full history of
+                hygiene grades stays transparent.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== ROLES =========================== -->
+      <section class="lp-section lp-section--tight" id="roles">
+        <div class="container">
+          <p class="lp-eyebrow">Who it's for</p>
+          <h2 class="lp-section__title">
+            Built for everyone in the hawker ecosystem
+          </h2>
+          <div class="lp-roles">
+            <div class="lp-role">
+              <span class="lp-role__tag">Patrons</span>
+              <p>Browse, order and review.</p>
+            </div>
+            <div class="lp-role">
+              <span class="lp-role__tag">Stall owners</span>
+              <p>Manage menus and respond to feedback.</p>
+            </div>
+            <div class="lp-role">
+              <span class="lp-role__tag">Operators</span>
+              <p>Track rentals and stall performance.</p>
+            </div>
+            <div class="lp-role">
+              <span class="lp-role__tag">NEA officers</span>
+              <p>Inspect, grade and keep records.</p>
+            </div>
+          </div>
+          <div class="lp-cta-row">
+            <a class="btn btn--primary" href="./login.html">Get started</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================== FOOTER =========================== -->
+    <footer class="lp-footer">
+      <div class="container lp-footer__inner">
+        <div>
+          <div class="brand">
+            <span class="brand__mark">H</span>
+            <span class="brand__name">Hawker Hub<span>SHCMS</span></span>
+          </div>
+          <p class="lp-footer__copy">
+            A student project for the Singapore Hawker Centre Management System
+            case — Node.js, Express &amp; Microsoft SQL Server.
+          </p>
+        </div>
+        <nav class="lp-footer__links" aria-label="Footer">
+          <a href="#features">Features</a>
+          <a href="#roles">Who it's for</a>
+          <a href="./login.html">Sign in</a>
+          <a href="./credit.html">Credits</a>
+        </nav>
+      </div>
+      <div class="container lp-footer__bottom">
+        &copy; <span id="year">2026</span> Hawker Hub · Student project, not
+        affiliated with NEA.
+      </div>
+    </footer>
+  </body>
+</html>

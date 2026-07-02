@@ -1,0 +1,42 @@
+# =============================================================================
+#  .gitignore  —  files & folders Git should NOT track or upload to GitHub.
+#
+#  Anything listed here stays on your machine only. This keeps the repo small,
+#  clean, and free of secrets — all of which matters since GitHub usage is
+#  graded. Lines starting with # are comments (ignored by Git).
+# =============================================================================
+
+# --- Secrets & environment -------------------------------------------------
+#  NEVER commit .env — it holds your DB password and JWT secret. Anyone who
+#  could read it could access your database. (.env.example IS committed, so the
+#  rule below re-includes it with a leading "!".)
+.env
+.env.*
+!.env.example
+
+# --- Dependencies ----------------------------------------------------------
+#  node_modules/ is huge and machine-specific. Teammates rebuild it themselves
+#  by running `npm install`, which reads package.json + package-lock.json.
+#  Those two files ARE committed; the folder is not.
+node_modules/
+
+# --- Logs & runtime junk ---------------------------------------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# --- Test / coverage output ------------------------------------------------
+coverage/
+.nyc_output/
+
+# --- OS-generated files ----------------------------------------------------
+#  Created automatically by Windows / macOS — no place in the repo.
+.DS_Store
+Thumbs.db
+
+# --- Editor / IDE folders --------------------------------------------------
+.vscode/
+.idea/
+*.swp
