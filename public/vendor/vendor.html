@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Vendor Hub</title>
+    <meta
+      name="description"
+      content="Manage your incoming hawker stall orders, track performance, and set up promotions."
+    />
+
+    <link rel="stylesheet" href="../css/styles.css" />
+    <script src="../js/main.js" defer></script>
+    <script src="../js/vendor.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a
+          class="brand"
+          href="/vendor/vendor.html"
+          aria-label="Vendor Hub home"
+        >
+          <span class="brand__mark">H</span>
+          <span class="brand__name">Hawker Hub <span>Vendor</span></span>
+        </a>
+        <button
+          class="nav-toggle"
+          aria-label="Toggle menu"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+        >
+          <span class="nav-toggle__bar"></span
+          ><span class="nav-toggle__bar"></span
+          ><span class="nav-toggle__bar"></span>
+        </button>
+        <nav class="nav" id="primary-nav" aria-label="Primary">
+          <a class="nav__link is-active" href="/vendor/vendor.html"
+            >Dashboard</a
+          >
+          <a class="nav__link" href="/vendor/menu.html">Menu Management</a>
+          <a
+            class="btn btn--ghost btn--sm"
+            href="/login.html"
+            style="margin-left: 0.5rem"
+            >Sign out</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container section">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: var(--space-6);
+          "
+        >
+          <div>
+            <p class="eyebrow">Workspace</p>
+            <h1 class="section__title" style="margin: 0">Vendor Dashboard</h1>
+          </div>
+          <div class="status-pill status-pill--ready status-pill--lg">
+            Stall Open — Accepting Orders
+          </div>
+        </div>
+
+        <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+        <div class="tabs" data-tabs data-tab-scope>
+          <button class="tab is-active" type="button" data-tab="orders">
+            Incoming Orders
+          </button>
+          <button class="tab" type="button" data-tab="performance">
+            Performance
+          </button>
+          <button class="tab" type="button" data-tab="promotions">
+            Promotions
+          </button>
+        </div>
+
+        <div class="tab-panel" data-panel="orders">
+          <article class="card">
+            <header class="card__head" style="margin-bottom: var(--space-4)">
+              <h2 class="card__title">Live Orders</h2>
+              <p class="card__text">
+                Manage orders as they come in. Update status to notify
+                customers.
+              </p>
+            </header>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Order #</th>
+                    <th>Time</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-tbody">
+                  <tr>
+                    <td
+                      colspan="6"
+                      style="text-align: center; color: var(--color-ink-muted)"
+                    >
+                      Loading live orders...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="tab-panel is-hidden" data-panel="performance">
+          <div
+            class="stat-tags"
+            style="margin-bottom: var(--space-8); justify-content: flex-start"
+          >
+            <div class="stat-tag" style="flex: 1; min-width: 200px">
+              <div class="stat-tag__num" id="stat-revenue">S$0.00</div>
+              <div class="stat-tag__label">Today's Revenue</div>
+            </div>
+            <div class="stat-tag" style="flex: 1; min-width: 200px">
+              <div class="stat-tag__num" id="stat-orders">0</div>
+              <div class="stat-tag__label">Orders Completed</div>
+            </div>
+            <div class="stat-tag" style="flex: 1; min-width: 200px">
+              <div class="stat-tag__num" id="stat-rating">0.0</div>
+              <div class="stat-tag__label">Avg Customer Rating</div>
+            </div>
+          </div>
+
+          <article class="card">
+            <header class="card__head" style="margin-bottom: var(--space-4)">
+              <h2 class="card__title">Top Selling Items</h2>
+            </header>
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Qty Sold Today</th>
+                    <th>Revenue Generated</th>
+                  </tr>
+                </thead>
+                <tbody id="performance-tbody">
+                  <tr>
+                    <td
+                      colspan="4"
+                      style="text-align: center; color: var(--color-ink-muted)"
+                    >
+                      Loading performance data...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="tab-panel is-hidden" data-panel="promotions">
+          <div class="grid grid--2">
+            <article class="card">
+              <header class="card__head" style="margin-bottom: var(--space-4)">
+                <h2 class="card__title">Create Promotion</h2>
+                <p class="card__text">
+                  Offer discounts to attract more patrons.
+                </p>
+              </header>
+
+              <form
+                class="form"
+                id="promo-form"
+                novalidate
+                style="max-width: 100%"
+              >
+                <label class="field">
+                  <span class="field__label">Promo Code</span>
+                  <input
+                    class="input"
+                    id="promo-code"
+                    name="code"
+                    type="text"
+                    required
+                    placeholder="e.g. LUNCH10"
+                    style="text-transform: uppercase"
+                  />
+                </label>
+
+                <div class="field-grid field-grid--2">
+                  <label class="field">
+                    <span class="field__label">Discount Type</span>
+                    <select class="select" id="promo-type" name="type" required>
+                      <option value="percentage">Percentage (%)</option>
+                      <option value="flat">Flat Amount (S$)</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span class="field__label">Discount Value</span>
+                    <input
+                      class="input"
+                      id="promo-value"
+                      name="value"
+                      type="number"
+                      min="1"
+                      required
+                      placeholder="10"
+                    />
+                  </label>
+                </div>
+
+                <div style="margin-top: var(--space-4)">
+                  <button
+                    class="btn btn--primary"
+                    type="submit"
+                    id="save-promo-btn"
+                  >
+                    Launch Promotion
+                  </button>
+                </div>
+              </form>
+            </article>
+
+            <article class="card">
+              <header class="card__head" style="margin-bottom: var(--space-4)">
+                <h2 class="card__title">Active Promotions</h2>
+              </header>
+              <div class="table-wrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Discount</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="promos-tbody">
+                    <tr>
+                      <td
+                        colspan="4"
+                        style="
+                          text-align: center;
+                          color: var(--color-ink-muted);
+                        "
+                      >
+                        Loading active promotions...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendors — Operator Hub</title>
+    <meta
+      name="description"
+      content="View and manage all vendors operating in your hawker centres."
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <script src="../js/main.js" defer></script>
+    <script src="../js/operator-vendors.js" defer></script>
+    <style>
+      .action-gap {
+        display: inline-flex;
+        gap: var(--space-4);
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="./operator.html" aria-label="Operator Hub home">
+          <span class="brand__mark">H</span>
+          <span class="brand__name">Hawker Hub <span>Operator</span></span>
+        </a>
+        <button
+          class="nav-toggle"
+          aria-label="Toggle menu"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+        >
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+        <nav class="nav" id="primary-nav" aria-label="Primary">
+          <a class="nav__link" href="./operator.html">Dashboard</a>
+          <a class="nav__link" href="./centres.html">Centres</a>
+          <a class="nav__link" href="./stalls.html">Stalls</a>
+          <a class="nav__link is-active" href="./vendors.html">Vendors</a>
+          <a
+            class="btn btn--ghost btn--sm"
+            href="/login.html"
+            style="margin-left: 0.5rem"
+            >Sign out</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container section">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="./operator.html">Dashboard</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__current">Vendors</span>
+        </nav>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: var(--space-6);
+          "
+        >
+          <div>
+            <p class="eyebrow">Management</p>
+            <h1 class="section__title" style="margin: 0">Vendors</h1>
+          </div>
+          <button class="btn btn--primary" type="button" id="add-vendor-btn">
+            + Add Vendor
+          </button>
+        </div>
+
+        <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+        <!-- Add / Edit Vendor form (hidden by default) -->
+        <article
+          class="card is-hidden"
+          id="vendor-form-card"
+          style="margin-bottom: var(--space-8)"
+        >
+          <header class="card__head" style="margin-bottom: var(--space-6)">
+            <h2 class="card__title" id="vendor-form-title">Add New Vendor</h2>
+          </header>
+          <form
+            class="form"
+            id="vendor-form"
+            novalidate
+            style="max-width: 100%"
+          >
+            <input type="hidden" id="vendor-id" name="vendorId" />
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Full Name</span>
+                <input
+                  class="input"
+                  id="vendor-name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="e.g. Tan Wei Ming"
+                />
+              </label>
+              <label class="field">
+                <span class="field__label">Email</span>
+                <input
+                  class="input"
+                  id="vendor-email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="vendor@example.com"
+                />
+              </label>
+            </div>
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Phone</span>
+                <input
+                  class="input"
+                  id="vendor-phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  placeholder="e.g. 91234567"
+                  inputmode="tel"
+                />
+              </label>
+              <label class="field">
+                <span class="field__label">Status</span>
+                <select
+                  class="select"
+                  id="vendor-status"
+                  name="status"
+                  required
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </label>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: var(--space-3);
+                margin-top: var(--space-4);
+              "
+            >
+              <button
+                class="btn btn--primary"
+                type="submit"
+                id="save-vendor-btn"
+              >
+                Save Vendor
+              </button>
+              <button
+                class="btn btn--outline"
+                type="button"
+                id="cancel-vendor-btn"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </article>
+
+        <!-- Vendors table -->
+        <article class="card">
+          <header
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              margin-bottom: var(--space-6);
+            "
+          >
+            <div>
+              <h2 class="card__title">All Vendors</h2>
+              <p class="card__text" id="vendors-count">Loading...</p>
+            </div>
+            <div
+              class="toolbar"
+              style="margin: 0; flex-wrap: wrap; gap: var(--space-3)"
+            >
+              <!-- Sort dropdown -->
+              <div class="sort">
+                <select
+                  class="select"
+                  id="vendor-sort"
+                  aria-label="Sort vendors"
+                >
+                  <option value="name-asc">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                  <option value="status">Status (Active first)</option>
+                  <option value="stalls-desc">Stalls (Most first)</option>
+                  <option value="stalls-asc">Stalls (Least first)</option>
+                </select>
+              </div>
+              <!-- Status filter -->
+              <div class="sort">
+                <select
+                  class="select"
+                  id="vendor-status-filter"
+                  aria-label="Filter by status"
+                >
+                  <option value="">All statuses</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <!-- Search -->
+              <div class="search" style="min-width: 240px">
+                <svg
+                  class="search__icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="m20 20-3.2-3.2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <input
+                  class="input"
+                  id="vendor-search"
+                  type="search"
+                  placeholder="Search vendors…"
+                  aria-label="Search vendors"
+                />
+              </div>
+            </div>
+          </header>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Stalls</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="vendors-tbody">
+                <tr>
+                  <td
+                    colspan="6"
+                    style="text-align: center; color: var(--color-ink-muted)"
+                  >
+                    Loading vendors...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stalls — Operator Hub</title>
+    <meta
+      name="description"
+      content="View and manage all stalls and their rental agreements."
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <script src="../js/main.js" defer></script>
+    <script src="../js/operator-stalls.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="./operator.html" aria-label="Operator Hub home">
+          <span class="brand__mark">H</span>
+          <span class="brand__name">Hawker Hub <span>Operator</span></span>
+        </a>
+        <button
+          class="nav-toggle"
+          aria-label="Toggle menu"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+        >
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+        <nav class="nav" id="primary-nav" aria-label="Primary">
+          <a class="nav__link" href="./operator.html">Dashboard</a>
+          <a class="nav__link" href="./centres.html">Centres</a>
+          <a class="nav__link is-active" href="./stalls.html">Stalls</a>
+          <a class="nav__link" href="./vendors.html">Vendors</a>
+          <a
+            class="btn btn--ghost btn--sm"
+            href="/login.html"
+            style="margin-left: 0.5rem"
+            >Sign out</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container section">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="./operator.html">Dashboard</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__current">Stalls</span>
+        </nav>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: var(--space-6);
+          "
+        >
+          <div>
+            <p class="eyebrow">Management</p>
+            <h1 class="section__title" style="margin: 0">Stalls & Rentals</h1>
+          </div>
+          <button class="btn btn--primary" type="button" id="add-rental-btn">
+            + New Rental Agreement
+          </button>
+        </div>
+
+        <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+        <!-- New Rental Agreement form (hidden by default) -->
+        <article
+          class="card is-hidden"
+          id="rental-form-card"
+          style="margin-bottom: var(--space-8)"
+        >
+          <header class="card__head" style="margin-bottom: var(--space-6)">
+            <h2 class="card__title" id="rental-form-title">
+              New Rental Agreement
+            </h2>
+          </header>
+          <form
+            class="form"
+            id="rental-form"
+            novalidate
+            style="max-width: 100%"
+          >
+            <input type="hidden" id="rental-id" name="rentalId" />
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Stall Unit No.</span>
+                <input
+                  class="input"
+                  id="rental-stall-no"
+                  name="stallNo"
+                  type="text"
+                  required
+                  placeholder="e.g. #02-15"
+                />
+              </label>
+              <label class="field">
+                <span class="field__label">Hawker Centre</span>
+                <select
+                  class="select"
+                  id="rental-centre"
+                  name="centreId"
+                  required
+                >
+                  <option value="" disabled selected>Select a centre</option>
+                </select>
+              </label>
+            </div>
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Vendor</span>
+                <select
+                  class="select"
+                  id="rental-vendor"
+                  name="vendorId"
+                  required
+                >
+                  <option value="" disabled selected>Select a vendor</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field__label">Monthly Rent (S$)</span>
+                <input
+                  class="input"
+                  id="rental-amount"
+                  name="monthlyRent"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  required
+                  placeholder="0.00"
+                />
+              </label>
+            </div>
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Start Date</span>
+                <input
+                  class="input"
+                  id="rental-start"
+                  name="startDate"
+                  type="date"
+                  required
+                />
+              </label>
+              <label class="field">
+                <span class="field__label">End Date</span>
+                <input
+                  class="input"
+                  id="rental-end"
+                  name="endDate"
+                  type="date"
+                  required
+                />
+              </label>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: var(--space-3);
+                margin-top: var(--space-4);
+              "
+            >
+              <button
+                class="btn btn--primary"
+                type="submit"
+                id="save-rental-btn"
+              >
+                Save Agreement
+              </button>
+              <button
+                class="btn btn--outline"
+                type="button"
+                id="cancel-rental-btn"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </article>
+
+        <div data-tab-scope>
+          <div class="tabs" data-tabs>
+            <button class="tab is-active" type="button" data-tab="stalls">
+              All Stalls
+            </button>
+            <button class="tab" type="button" data-tab="rentals">
+              Rental Agreements
+            </button>
+          </div>
+
+          <!-- STALLS TAB -->
+          <div class="tab-panel" data-panel="stalls">
+            <article class="card">
+              <header
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-end;
+                  margin-bottom: var(--space-6);
+                "
+              >
+                <div>
+                  <h2 class="card__title">All Stalls</h2>
+                  <p class="card__text" id="stalls-count">Loading...</p>
+                </div>
+                <div class="toolbar" style="margin: 0">
+                  <div class="search" style="min-width: 240px">
+                    <svg
+                      class="search__icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <circle
+                        cx="11"
+                        cy="11"
+                        r="7"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="m20 20-3.2-3.2"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <input
+                      class="input"
+                      id="stall-search"
+                      type="search"
+                      placeholder="Search stalls…"
+                      aria-label="Search stalls"
+                    />
+                  </div>
+                  <div class="sort">
+                    <select
+                      class="select"
+                      id="stall-centre-filter"
+                      aria-label="Filter by centre"
+                    >
+                      <option value="">All centres</option>
+                    </select>
+                  </div>
+                </div>
+              </header>
+              <div class="table-wrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Unit No.</th>
+                      <th>Stall Name</th>
+                      <th>Centre</th>
+                      <th>Cuisine</th>
+                      <th>Hygiene Grade</th>
+                      <th>Vendor</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stalls-tbody">
+                    <tr>
+                      <td
+                        colspan="6"
+                        style="
+                          text-align: center;
+                          color: var(--color-ink-muted);
+                        "
+                      >
+                        Loading stalls...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <!-- RENTALS TAB -->
+          <div class="tab-panel is-hidden" data-panel="rentals">
+            <article class="card">
+              <header
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-end;
+                  margin-bottom: var(--space-6);
+                "
+              >
+                <div>
+                  <h2 class="card__title">Rental Agreements</h2>
+                  <p class="card__text" id="rentals-count">Loading...</p>
+                </div>
+              </header>
+              <div class="table-wrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Agreement #</th>
+                      <th>Stall</th>
+                      <th>Vendor</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Monthly Rent</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rentals-tbody">
+                    <tr>
+                      <td
+                        colspan="8"
+                        style="
+                          text-align: center;
+                          color: var(--color-ink-muted);
+                        "
+                      >
+                        Loading rental agreements...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+        <!-- /data-tab-scope -->
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account — Hawker Hub</title>
+  <meta name="description" content="Manage your Hawker Hub account, review your past orders, and save payment methods." />
+
+  <link rel="stylesheet" href="/css/styles.css" />
+  <script src="/js/main.js" defer></script>
+  <script src="/js/account.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/customer/browse-all-stalls.html" aria-label="Hawker Hub home">
+        <span class="brand__mark">H</span>
+        <span class="brand__name">Hawker Hub</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <a class="nav__link" href="/customer/browse-all-stalls.html">Browse</a>
+        <a class="nav__link" href="/customer/cart.html">Cart</a>
+        <a class="nav__link is-active" href="/customer/account.html">My Account</a>
+        <a class="btn btn--ghost btn--sm" href="/login.html" style="margin-left:.5rem;">Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="container">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/customer/browse-all-stalls.html">Hawker centres</a>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__current">My account</span>
+      </nav>
+
+      <h1 class="account-title">My account</h1>
+
+      <!-- Shared feedback banner (populated by showFeedback() in main.js) -->
+      <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+      <!--
+        Two-column shell: settings nav on the left, panel on the right.
+        Collapses to a single column on narrow viewports — the nav becomes a
+        horizontal scroller above the panel.
+      -->
+      <div class="settings-layout">
+
+        <!-- Settings nav (left-border accent on the active item) -->
+        <nav class="settings-nav" aria-label="Account sections">
+          <button class="settings-nav__item is-active" type="button" data-tab="account">
+            <svg class="settings-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+              <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Account</span>
+          </button>
+          <button class="settings-nav__item" type="button" data-tab="orders">
+            <svg class="settings-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 6h16v3H4zM5 9v11h14V9M9 13h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <span>Order history</span>
+          </button>
+          <button class="settings-nav__item" type="button" data-tab="payment">
+            <svg class="settings-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M3 10h18M7 15h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Payment methods</span>
+          </button>
+        </nav>
+
+        <!-- Panel: one section visible at a time, controlled by data-tab on the nav buttons -->
+        <div class="settings-panel">
+
+          <!-- ─────────────── ACCOUNT TAB ─────────────── -->
+          <section class="settings-section" data-section="account">
+
+            <!-- Profile card -->
+            <article class="settings-card">
+              <header class="settings-card__head">
+                <h2 class="settings-card__title">Profile</h2>
+                <p class="settings-card__sub">Update your personal information. Your name will appear on your orders.</p>
+              </header>
+
+              <form class="settings-card__body" id="profile-form" novalidate>
+                <!-- First + Last side-by-side; this is the form physically respecting field length -->
+                <div class="field-grid field-grid--2">
+                  <label class="field">
+                    <span class="field__label">First name</span>
+                    <input class="input" id="first-name" name="firstName" type="text"
+                           required autocomplete="given-name" />
+                  </label>
+                  <label class="field">
+                    <span class="field__label">Last name</span>
+                    <input class="input" id="last-name" name="lastName" type="text"
+                           required autocomplete="family-name" />
+                  </label>
+                </div>
+
+                <label class="field">
+                  <span class="field__label">Email</span>
+                  <input class="input" id="email" name="email" type="email"
+                         required autocomplete="email" />
+                </label>
+
+                <label class="field">
+                  <span class="field__label">Phone</span>
+                  <input class="input" id="phone" name="phone" type="tel"
+                         required autocomplete="tel" inputmode="tel" />
+                </label>
+
+                <!-- Read-only system fields shown as static rows, not inputs -->
+                <div class="field-static">
+                  <span class="field-static__label">Role</span>
+                  <span class="role-chip">Customer</span>
+                </div>
+                <div class="field-static">
+                  <span class="field-static__label">Member since</span>
+                  <span class="field-static__value" id="member-since">—</span>
+                </div>
+              </form>
+
+              <footer class="settings-card__foot">
+                <button class="btn-primary" type="submit" form="profile-form" id="save-profile">Save changes</button>
+              </footer>
+            </article>
+
+            <!-- Password card — its own card, its own action -->
+            <article class="settings-card">
+              <header class="settings-card__head">
+                <h2 class="settings-card__title">Password</h2>
+                <p class="settings-card__sub">Change your password to keep your account secure.</p>
+              </header>
+              <footer class="settings-card__foot settings-card__foot--start">
+                <button class="btn-secondary" type="button" id="change-password">Change password</button>
+              </footer>
+            </article>
+
+            <!-- Danger zone — the one piece worth borrowing wholesale from the screenshot -->
+            <article class="settings-card settings-card--danger">
+              <span class="danger-tag">Danger Zone</span>
+              <header class="settings-card__head">
+                <h2 class="settings-card__title">Delete account</h2>
+                <p class="settings-card__sub">
+                  Permanently delete your account and all your order history.
+                  <strong>This action is irreversible.</strong>
+                </p>
+              </header>
+              <footer class="settings-card__foot settings-card__foot--start">
+                <button class="btn-danger" type="button" id="delete-account">Delete account</button>
+              </footer>
+            </article>
+          </section>
+
+          <!-- ─────────────── ORDER HISTORY TAB ─────────────── -->
+          <section class="settings-section is-hidden" data-section="orders">
+            <article class="settings-card">
+              <header class="settings-card__head">
+                <h2 class="settings-card__title">Order history</h2>
+                <p class="settings-card__sub">Your last 10 orders. Each row is one trip to the hub.</p>
+              </header>
+
+              <!-- Order list / empty state — populated by account.js -->
+              <div class="settings-card__body" id="orders-list">
+                <p class="orders-loading">Loading your orders…</p>
+              </div>
+
+              <footer class="settings-card__foot settings-card__foot--between" id="orders-foot">
+                <span class="orders-meta" id="orders-meta"></span>
+                <a class="btn-secondary" href="/customer/orders.html" id="view-all-orders">View all orders</a>
+              </footer>
+            </article>
+          </section>
+
+          <!-- ─────────────── PAYMENT METHODS TAB ─────────────── -->
+          <section class="settings-section is-hidden" data-section="payment">
+            <article class="settings-card">
+              <header class="settings-card__head">
+                <h2 class="settings-card__title">Payment methods</h2>
+                <p class="settings-card__sub">Save a card or PayNow to check out faster next time.</p>
+              </header>
+
+              <!-- Empty state — honest about the stub, structural promise of the feature -->
+              <div class="settings-card__body">
+                <div class="empty">
+                  <p class="empty__title">No payment methods saved yet.</p>
+                  <p class="empty__sub">For the project demo, payments are recorded on order placement only.</p>
+                </div>
+              </div>
+            </article>
+          </section>
+
+        </div><!-- /.settings-panel -->
+      </div><!-- /.settings-layout -->
+
+    </div>
+  </main>
+</body>
+</html>

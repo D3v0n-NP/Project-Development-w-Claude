@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Title and description are set dynamically by stalls.js once the centre loads -->
+  <title>Hawker centre — Hawker Hub</title>
+  <meta name="description" content="Browse the stalls inside this hawker centre, filter by cuisine and hygiene grade, and view menus." />
+
+  <!-- root-relative (/) because this page is inside customer/ -->
+  <link rel="stylesheet" href="/css/styles.css" />
+  <!-- main.js MUST load first so debounce() and showFeedback() are defined when stalls.js runs -->
+  <script src="/js/main.js" defer></script>
+  <script src="/js/stalls.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Shared interior header, identical across customer pages -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/customer/browse-all-stalls.html" aria-label="Hawker Hub home">
+        <span class="brand__mark">H</span>
+        <span class="brand__name">Hawker Hub</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <a class="nav__link" href="/customer/browse-all-stalls.html">Browse</a>
+        <a class="nav__link" href="/customer/cart.html">Cart</a>
+        <a class="nav__link" href="/customer/account.html">My Account</a>
+        <a class="btn btn--ghost btn--sm" href="/login.html" style="margin-left:.5rem;">Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="container">
+
+      <!-- Breadcrumb: tells the customer where they are in the centre→stall hierarchy
+           and gives a one-click route back to the directory. -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/customer/browse-all-stalls.html">Hawker centres</a>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <!-- Centre name injected by stalls.js once GET /api/hawker-centres/:id resolves -->
+        <span class="breadcrumb__current" id="crumb-current">Loading…</span>
+      </nav>
+
+      <!-- Centre header (the "signboard"). All text content is replaced by stalls.js
+           after the centre fetch resolves. -->
+      <section class="centre-header" aria-labelledby="centre-name">
+        <h1 class="centre-header__name" id="centre-name">Loading…</h1>
+        <p class="centre-header__meta" id="centre-meta">
+          <!-- Pattern set by JS: "<address> · <N stalls> · <status>" with hairline dot separators -->
+        </p>
+      </section>
+
+      <!-- Filter toolbar: search + cuisine + grade, all on one row, wrapping on narrow viewports.
+           Cuisine + grade live HERE (not on the directory) because they describe stalls. -->
+      <section class="toolbar" aria-label="Filter stalls">
+        <div class="search">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input class="input" id="stall-search" type="search"
+                 placeholder="Search stalls or cuisines…" aria-label="Search stalls" />
+        </div>
+        <div class="sort">
+          <select class="select" id="cuisine-filter" aria-label="Filter by cuisine">
+            <option value="">All cuisines</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Malay">Malay</option>
+            <option value="Indian">Indian</option>
+            <option value="Western">Western</option>
+            <option value="Halal">Halal</option>
+          </select>
+        </div>
+        <div class="sort">
+          <select class="select" id="grade-filter" aria-label="Filter by hygiene grade">
+            <option value="">All grades</option>
+            <option value="A">Grade A</option>
+            <option value="B">Grade B</option>
+            <option value="C">Grade C</option>
+            <option value="D">Grade D</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- role="status" so screen readers announce the live count -->
+      <p class="resultline" id="stall-count" role="status"></p>
+
+      <!-- Shared error banner — populated by showFeedback() from main.js -->
+      <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+      <!-- Card grid: stalls.js fills this. Reuses the .stall-card component. -->
+      <section class="stall-grid" id="stall-grid" aria-label="Stalls"></section>
+
+      <!-- Empty state: shown when filters match nothing. Invitation, not a dead end. -->
+      <div class="empty is-hidden" id="empty-state">
+        <p class="empty__title">No stalls match your filters.</p>
+        <p class="empty__sub">Try a different cuisine, clear the grade filter, or clear all.</p>
+        <button class="empty__btn" id="empty-reset" type="button">Clear all filters</button>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

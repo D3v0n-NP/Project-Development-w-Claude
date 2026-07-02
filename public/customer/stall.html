@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stall — Hawker Hub</title>
+  <meta name="description" content="View this stall's menu, check its hygiene grade, and add dishes to your cart." />
+
+  <link rel="stylesheet" href="/css/styles.css" />
+  <!-- main.js must load first so debounce() and showFeedback() are defined when stall-detail.js runs -->
+  <script src="/js/main.js" defer></script>
+  <script src="/js/stall-detail.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Shared interior header, identical across customer pages -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/customer/browse-all-stalls.html" aria-label="Hawker Hub home">
+        <span class="brand__mark">H</span>
+        <span class="brand__name">Hawker Hub</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <a class="nav__link" href="/customer/browse-all-stalls.html">Browse</a>
+        <a class="nav__link" href="/customer/cart.html">Cart</a>
+        <a class="nav__link" href="/customer/account.html">My Account</a>
+        <a class="btn btn--ghost btn--sm" href="/login.html" style="margin-left:.5rem;">Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="container">
+
+      <!-- Breadcrumb: full path through the centre→stall hierarchy.
+           Centre name and link are injected by JS once GET /api/stalls/:id resolves. -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/customer/browse-all-stalls.html">Hawker centres</a>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <a id="crumb-centre" href="#">Loading…</a>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__current" id="crumb-stall">Loading…</span>
+      </nav>
+
+      <!-- Stall header (the "stall front").
+           Grade pill is prominent here because hygiene is the trust signal. -->
+      <section class="stall-header" aria-labelledby="stall-name">
+        <div class="stall-header__row">
+          <!-- Grade pill — populated by JS so we can apply the correct modifier class -->
+          <div class="stall-header__grade" id="stall-grade"></div>
+          <div class="stall-header__body">
+            <h1 class="stall-header__name" id="stall-name">Loading…</h1>
+            <p class="stall-header__meta" id="stall-meta"><!-- unit · cuisines · rating injected by JS --></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category tabs. Built dynamically from the menu items' categories so we never
+           render a tab with zero items. "All" sits first as the default. -->
+      <nav class="cat-tabs" id="cat-tabs" aria-label="Menu categories"></nav>
+
+      <!-- Search row. Categories are above as tabs (navigation),
+           free-text search stays as a refinement here. -->
+      <section class="toolbar" aria-label="Search the menu">
+        <div class="search">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input class="input" id="menu-search" type="search"
+                 placeholder="Search the menu…" aria-label="Search menu items" />
+        </div>
+      </section>
+
+      <p class="resultline" id="menu-count" role="status"></p>
+
+      <!-- Shared error banner — populated by showFeedback() from main.js -->
+      <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+      <!-- Menu grid — stall-detail.js fills this with .menu-item-card elements -->
+      <section class="menu-grid" id="menu-grid" aria-label="Menu items"></section>
+
+      <!-- Empty state for the no-matches case -->
+      <div class="empty is-hidden" id="empty-state">
+        <p class="empty__title">No items match your search.</p>
+        <p class="empty__sub">Try a different keyword or switch to another category.</p>
+        <button class="empty__btn" id="empty-reset" type="button">Clear search</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!--
+    Sticky cart bar: only shown when the cart has items. The bar is fixed to the
+    bottom of the viewport so customers don't lose track of their order as they
+    scroll the menu. Updated live by stall-detail.js whenever the cart changes.
+  -->
+  <aside class="cart-bar is-hidden" id="cart-bar" role="region" aria-label="Cart summary">
+    <div class="container cart-bar__inner">
+      <div class="cart-bar__summary">
+        <span class="cart-bar__count" id="cart-bar-count">0 items</span>
+        <span class="cart-bar__dot" aria-hidden="true">·</span>
+        <span class="cart-bar__total" id="cart-bar-total">S$0.00</span>
+      </div>
+      <a class="cart-bar__cta" href="/customer/cart.html">View cart →</a>
+    </div>
+  </aside>
+</body>
+</html>

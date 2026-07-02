@@ -82,7 +82,7 @@ function initTabs() {
     function activate(name) {
       // Toggle the active styling on the buttons.
       tabs.forEach((tab) =>
-        tab.classList.toggle("is-active", tab.dataset.tab === name)
+        tab.classList.toggle("is-active", tab.dataset.tab === name),
       );
       // Show only the matching panel; hide the others.
       scope.querySelectorAll(".tab-panel").forEach((panel) => {
@@ -91,7 +91,7 @@ function initTabs() {
     }
 
     tabs.forEach((tab) =>
-      tab.addEventListener("click", () => activate(tab.dataset.tab))
+      tab.addEventListener("click", () => activate(tab.dataset.tab)),
     );
 
     // Start on the first tab so a panel is always visible on load.
@@ -136,3 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
   /* (d) Tabs: wire up any tabbed panels found on the page. */
   initTabs();
 });
+
+function debounce(fn, wait = 150) {
+  let t;
+  return function (...args) {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args).wait);
+  };
+}

@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Management — Vendor Hub</title>
+    <meta
+      name="description"
+      content="Manage your hawker stall menu, update prices, and set item availability."
+    />
+
+    <link rel="stylesheet" href="../css/styles.css" />
+    <script src="../js/main.js" defer></script>
+    <script src="../js/menu.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a
+          class="brand"
+          href="/vendor/vendor.html"
+          aria-label="Vendor Hub home"
+        >
+          <span class="brand__mark">H</span>
+          <span class="brand__name">Hawker Hub <span>Vendor</span></span>
+        </a>
+        <button
+          class="nav-toggle"
+          aria-label="Toggle menu"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+        >
+          <span class="nav-toggle__bar"></span
+          ><span class="nav-toggle__bar"></span
+          ><span class="nav-toggle__bar"></span>
+        </button>
+        <nav class="nav" id="primary-nav" aria-label="Primary">
+          <a class="nav__link" href="/vendor/vendor.html">Dashboard</a>
+          <a class="nav__link is-active" href="/vendor/menu.html"
+            >Menu Management</a
+          >
+          <a
+            class="btn btn--ghost btn--sm"
+            href="/login.html"
+            style="margin-left: 0.5rem"
+            >Sign out</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container section">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/vendor/vendor.html">Vendor Dashboard</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__current">Menu Management</span>
+        </nav>
+
+        <h1 class="section__title">Menu Management</h1>
+        <p class="section__intro" style="margin-bottom: var(--space-8)">
+          Add new dishes, update pricing, and assign multiple cuisines to your
+          menu items.
+        </p>
+
+        <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+        <article class="card" style="margin-bottom: var(--space-8)">
+          <header class="card__head" style="margin-bottom: var(--space-6)">
+            <h2 class="card__title" id="form-title">Add new menu item</h2>
+          </header>
+
+          <form class="form" id="menu-form" novalidate style="max-width: 100%">
+            <input type="hidden" id="item-id" name="itemId" />
+
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Item name</span>
+                <input
+                  class="input"
+                  id="item-name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="e.g. Hainanese Chicken Rice"
+                />
+              </label>
+              <label class="field">
+                <span class="field__label">Price (S$)</span>
+                <input
+                  class="input"
+                  id="item-price"
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  required
+                  placeholder="0.00"
+                />
+              </label>
+            </div>
+
+            <label class="field">
+              <span class="field__label">Description</span>
+              <textarea
+                class="textarea"
+                id="item-desc"
+                name="description"
+                rows="2"
+                placeholder="Briefly describe the dish..."
+              ></textarea>
+            </label>
+
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Category</span>
+                <select
+                  class="select"
+                  id="item-category"
+                  name="category"
+                  required
+                >
+                  <option value="" disabled selected>Select a category</option>
+                  <option value="Mains">Mains</option>
+                  <option value="Sides">Sides</option>
+                  <option value="Drinks">Drinks</option>
+                  <option value="Desserts">Desserts</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span class="field__label"
+                  >Cuisines
+                  <span class="field__hint"
+                    >(Hold Ctrl/Cmd to select multiple)</span
+                  ></span
+                >
+                <select
+                  class="select"
+                  id="item-cuisines"
+                  name="cuisines"
+                  multiple
+                  required
+                  style="height: auto; min-height: 100px"
+                >
+                  <option value="Chinese">Chinese</option>
+                  <option value="Malay">Malay</option>
+                  <option value="Indian">Indian</option>
+                  <option value="Western">Western</option>
+                  <option value="Halal">Halal</option>
+                  <option value="Vegetarian">Vegetarian</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Availability</span>
+                <select class="select" id="item-available" name="available">
+                  <option value="true">Available</option>
+                  <option value="false">Sold out</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span class="field__label"
+                  >Photo URL
+                  <span class="field__hint">(Live Preview)</span></span
+                >
+                <div
+                  style="
+                    display: flex;
+                    gap: var(--space-3);
+                    align-items: flex-start;
+                  "
+                >
+                  <div
+                    id="image-preview"
+                    style="
+                      width: 46px;
+                      height: 46px;
+                      border-radius: var(--radius-sm);
+                      background: var(--color-line);
+                      overflow: hidden;
+                      display: grid;
+                      place-items: center;
+                      flex-shrink: 0;
+                    "
+                  >
+                    <span
+                      style="color: var(--color-ink-muted); font-size: 0.7rem"
+                      >No img</span
+                    >
+                  </div>
+                  <input
+                    class="input"
+                    id="item-photo"
+                    name="photoUrl"
+                    type="url"
+                    placeholder="https://..."
+                    style="flex: 1"
+                  />
+                </div>
+              </label>
+            </div>
+
+            <label
+              class="field"
+              style="
+                margin-top: var(--space-2);
+                display: flex;
+                align-items: center;
+                gap: var(--space-2);
+                cursor: pointer;
+              "
+            >
+              <input
+                type="checkbox"
+                id="item-eco"
+                name="ecoFriendly"
+                style="
+                  width: 18px;
+                  height: 18px;
+                  accent-color: var(--color-green);
+                "
+              />
+              <span class="field__label" style="margin: 0"
+                >Offer Eco-Friendly Packaging (+S$0.50)</span
+              >
+              <span
+                class="status-pill status-pill--ready"
+                style="font-size: 0.6rem; padding: 0.1rem 0.4rem"
+                >Green Initiative</span
+              >
+            </label>
+
+            <div
+              style="
+                display: flex;
+                gap: var(--space-3);
+                margin-top: var(--space-4);
+              "
+            >
+              <button class="btn btn--primary" type="submit" id="save-btn">
+                Save item
+              </button>
+              <button
+                class="btn btn--outline is-hidden"
+                type="button"
+                id="cancel-btn"
+              >
+                Cancel edit
+              </button>
+            </div>
+          </form>
+        </article>
+
+        <article class="card">
+          <header
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              margin-bottom: var(--space-6);
+            "
+          >
+            <div>
+              <h2 class="card__title">Current Menu</h2>
+              <p class="card__text" id="menu-count">Loading items...</p>
+            </div>
+          </header>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 64px"></th>
+                  <th>Item</th>
+                  <th>Category</th>
+                  <th>Cuisines</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="menu-table-body">
+                <tr>
+                  <td
+                    colspan="7"
+                    style="
+                      text-align: center;
+                      color: var(--color-ink-muted);
+                      padding: var(--space-6);
+                    "
+                  >
+                    Loading your menu data...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>

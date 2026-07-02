@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse hawker centres — Hawker Hub</title>
+  <meta name="description" content="Browse all 120 NEA hawker centres, then drill into a centre to see its stalls and menus." />
+
+  <!-- Folder importation  -->
+  <link rel="stylesheet" href="/css/styles.css" />
+  <script src="/js/main.js" defer></script>
+  <script src="/js/centres.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Shared interior header. Links fixed to point at this page (the browse landing). -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/customer/browse-all-stalls.html" aria-label="Hawker Hub home">
+        <span class="brand__mark">H</span>
+        <span class="brand__name">Hawker Hub</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <a class="nav__link" href="/customer/browse-all-stalls.html">Browse</a>
+        <a class="nav__link" href="/customer/cart.html">Cart</a>
+        <a class="nav__link" href="/customer/account.html">My Account</a>
+        <a class="btn btn--ghost btn--sm" href="/login.html" style="margin-left:.5rem;">Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-head">
+      <p class="eyebrow">Browse</p>
+      <h1>Hawker centres</h1>
+      <p class="page-head__intro">Pick a hawker centre to see its stalls, hygiene grades, and menus.</p>
+    </section>
+
+    <section class="container">
+      <!-- Centre-level controls: search by name + sort. (Cuisine/grade live on the stall list.) -->
+      <div class="centre-filters">
+        <input class="input" id="centre-search" type="search"
+               placeholder="Search by centre name…" aria-label="Search hawker centres" />
+        <select class="select" id="centre-sort" aria-label="Sort hawker centres">
+          <option value="name">Sort: Name (A–Z)</option>
+          <option value="stalls">Sort: Most stalls</option>
+        </select>
+      </div>
+
+      <!-- role="status" so screen readers announce the live count -->
+      <p class="centre-count" id="centre-count" role="status"></p>
+
+      <!-- Shared feedback box (errors from loading) -->
+      <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+      <!-- centres.js fills this -->
+      <div class="centre-grid" id="centre-grid"></div>
+
+      <!-- shown when nothing matches the search -->
+      <div class="empty-state is-hidden" id="empty-state">No hawker centres match your search.</div>
+    </section>
+  </main>
+</body>
+</html>

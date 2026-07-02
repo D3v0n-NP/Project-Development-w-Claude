@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your cart — Hawker Hub</title>
+  <meta name="description" content="Review your order and place it across one or more hawker stalls." />
+
+  <link rel="stylesheet" href="/css/styles.css" />
+  <!-- main.js must load first so debounce() and showFeedback() are defined when cart.js runs -->
+  <script src="/js/main.js" defer></script>
+  <script src="/js/cart.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="/customer/browse-all-stalls.html" aria-label="Hawker Hub home">
+        <span class="brand__mark">H</span>
+        <span class="brand__name">Hawker Hub</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <a class="nav__link" href="/customer/browse-all-stalls.html">Browse</a>
+        <a class="nav__link is-active" href="/customer/cart.html">Cart</a>
+        <a class="nav__link" href="/customer/account.html">My Account</a>
+        <a class="btn btn--ghost btn--sm" href="/login.html" style="margin-left:.5rem;">Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="container">
+
+      <!-- Breadcrumb back to browse. No middle level — cart isn't part of the centre→stall path. -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/customer/browse-all-stalls.html">Hawker centres</a>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__current">Your cart</span>
+      </nav>
+
+      <!-- Page heading. No tagline — the cart speaks for itself; the summary card carries the work. -->
+      <h1 class="cart-title">Your cart</h1>
+
+      <!-- Shared error/info banner — populated by showFeedback() from main.js -->
+      <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+      <!--
+        Two-column layout: items list (wide) + sticky summary card (narrow).
+        Collapses to a single column on narrow viewports.
+        cart.js fills both sides; the empty state replaces the whole layout.
+      -->
+      <div class="cart-layout" id="cart-layout">
+        <!-- Left column: items grouped by stall -->
+        <section class="cart-items" id="cart-items" aria-label="Your items"></section>
+
+        <!-- Right column: the order ticket -->
+        <aside class="ticket" id="ticket" aria-label="Order summary">
+          <header class="ticket__head">
+            <h2 class="ticket__title">Order summary</h2>
+            <p class="ticket__sub" id="ticket-sub">0 items</p>
+          </header>
+
+          <!-- Per-stall subtotals (rendered by JS to show the "fan-out" honestly) -->
+          <ul class="ticket__lines" id="ticket-lines" aria-label="Per-stall subtotals"></ul>
+
+          <!-- Grand total: the figure the customer actually pays -->
+          <div class="ticket__total">
+            <span>Total</span>
+            <span class="ticket__total-value" id="ticket-total">S$0.00</span>
+          </div>
+
+          <!-- Customer details (required for guest checkout, prefilled if signed in later) -->
+          <form class="ticket__form" id="checkout-form" novalidate>
+            <h3 class="ticket__form-title">Your details</h3>
+
+            <label class="field">
+              <span class="field__label">Name</span>
+              <input class="input" id="cust-name" name="customerName" type="text"
+                     required autocomplete="name" placeholder="Your full name" />
+            </label>
+
+            <label class="field">
+              <span class="field__label">Phone</span>
+              <input class="input" id="cust-phone" name="customerPhone" type="tel"
+                     required autocomplete="tel" inputmode="tel"
+                     placeholder="e.g. 91234567" />
+            </label>
+
+            <label class="field">
+              <span class="field__label">Email <span class="field__optional">(optional)</span></span>
+              <input class="input" id="cust-email" name="customerEmail" type="email"
+                     autocomplete="email" placeholder="For your receipt" />
+            </label>
+
+            <button class="btn-place" type="submit" id="place-order">Place order</button>
+
+            <p class="ticket__fineprint">
+              You'll collect each item directly from its stall.
+            </p>
+          </form>
+        </aside>
+      </div>
+
+      <!--
+        Empty state. Hidden by default; cart.js shows this when the cart is empty
+        and hides the items+ticket layout entirely.
+      -->
+      <div class="empty empty--cart is-hidden" id="empty-state">
+        <p class="empty__title">Your cart is empty.</p>
+        <p class="empty__sub">Pick a hawker centre to start ordering.</p>
+        <a class="empty__btn" href="/customer/browse-all-stalls.html">Browse hawker centres</a>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

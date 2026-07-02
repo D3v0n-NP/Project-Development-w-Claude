@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centres — Operator Hub</title>
+    <meta
+      name="description"
+      content="View and manage all hawker centres under your operation."
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <script src="../js/main.js" defer></script>
+    <script src="../js/operator-centres.js" defer></script>
+    <style>
+      /* Extra gap between Edit and Delete */
+      .action-gap {
+        display: inline-flex;
+        gap: var(--space-4);
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="./operator.html" aria-label="Operator Hub home">
+          <span class="brand__mark">H</span>
+          <span class="brand__name">Hawker Hub <span>Operator</span></span>
+        </a>
+        <button
+          class="nav-toggle"
+          aria-label="Toggle menu"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+        >
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+        <nav class="nav" id="primary-nav" aria-label="Primary">
+          <a class="nav__link" href="./operator.html">Dashboard</a>
+          <a class="nav__link is-active" href="./centres.html">Centres</a>
+          <a class="nav__link" href="./stalls.html">Stalls</a>
+          <a class="nav__link" href="./vendors.html">Vendors</a>
+          <a
+            class="btn btn--ghost btn--sm"
+            href="/login.html"
+            style="margin-left: 0.5rem"
+            >Sign out</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container section">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="./operator.html">Dashboard</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span class="breadcrumb__current">Centres</span>
+        </nav>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: var(--space-6);
+          "
+        >
+          <div>
+            <p class="eyebrow">Management</p>
+            <h1 class="section__title" style="margin: 0">Hawker Centres</h1>
+          </div>
+          <button class="btn btn--primary" type="button" id="add-centre-btn">
+            + Add Centre
+          </button>
+        </div>
+
+        <div class="alert is-hidden" id="feedback" aria-live="polite"></div>
+
+        <!-- Add / Edit form (hidden by default) -->
+        <article
+          class="card is-hidden"
+          id="centre-form-card"
+          style="margin-bottom: var(--space-8)"
+        >
+          <header class="card__head" style="margin-bottom: var(--space-6)">
+            <h2 class="card__title" id="centre-form-title">Add New Centre</h2>
+          </header>
+          <form
+            class="form"
+            id="centre-form"
+            novalidate
+            style="max-width: 100%"
+          >
+            <input type="hidden" id="centre-id" name="centreId" />
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">Centre Name</span>
+                <input
+                  class="input"
+                  id="centre-name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="e.g. Maxwell Food Centre"
+                />
+              </label>
+              <label class="field">
+                <span class="field__label">Address</span>
+                <input
+                  class="input"
+                  id="centre-address"
+                  name="address"
+                  type="text"
+                  required
+                  placeholder="e.g. 1 Kadayanallur Street, S069184"
+                />
+              </label>
+            </div>
+            <div class="field-grid field-grid--2">
+              <label class="field">
+                <span class="field__label">No. of Cooked Food Stalls</span>
+                <input
+                  class="input"
+                  id="centre-stalls"
+                  name="numStalls"
+                  type="number"
+                  min="0"
+                  required
+                  placeholder="0"
+                />
+              </label>
+              <label class="field">
+                <span class="field__label">Status</span>
+                <select
+                  class="select"
+                  id="centre-status"
+                  name="status"
+                  required
+                >
+                  <option value="Existing">Existing</option>
+                  <option value="Under Construction">Under Construction</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </label>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: var(--space-3);
+                margin-top: var(--space-4);
+              "
+            >
+              <button
+                class="btn btn--primary"
+                type="submit"
+                id="save-centre-btn"
+              >
+                Save Centre
+              </button>
+              <button
+                class="btn btn--outline"
+                type="button"
+                id="cancel-centre-btn"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </article>
+
+        <!-- Centres table -->
+        <article class="card">
+          <header
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              margin-bottom: var(--space-6);
+            "
+          >
+            <div>
+              <h2 class="card__title">All Centres</h2>
+              <p class="card__text" id="centres-count">Loading...</p>
+            </div>
+            <!-- Filter + search toolbar -->
+            <div
+              class="toolbar"
+              style="margin: 0; flex-wrap: wrap; gap: var(--space-3)"
+            >
+              <div class="sort">
+                <select
+                  class="select"
+                  id="status-filter"
+                  aria-label="Filter by status"
+                >
+                  <option value="">All statuses</option>
+                  <option value="Existing">Operational</option>
+                  <option value="Under Construction">Under Construction</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
+              <div class="search" style="min-width: 240px">
+                <svg
+                  class="search__icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="m20 20-3.2-3.2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <input
+                  class="input"
+                  id="centre-search"
+                  type="search"
+                  placeholder="Search centres…"
+                  aria-label="Search centres"
+                />
+              </div>
+            </div>
+          </header>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Centre Name</th>
+                  <th>Address</th>
+                  <th>Stalls</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="centres-tbody">
+                <tr>
+                  <td
+                    colspan="5"
+                    style="text-align: center; color: var(--color-ink-muted)"
+                  >
+                    Loading centres...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>
