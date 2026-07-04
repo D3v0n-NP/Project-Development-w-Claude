@@ -25,9 +25,17 @@
 // --- Dependencies ----------------------------------------------------------
 const express = require("express");          // the web-server framework
 const path = require("path");                // builds safe cross-OS file paths
+require("dotenv").config();                   // load .env (DB creds, JWT secret) before anything else needs them
 
 // --- Create the app --------------------------------------------------------
 const app = express();
+const {testConnection} = require("./config/db");
+testConnection(); // exits the process immediately if the DB is unreachable
+
+// --- Read JSON request bodies -----------------------------------------------
+// Must come before express.static and before any API route — without this,
+// req.body on POST/PUT requests (like POST /api/orders) is undefined.
+app.use(express.json());
 
 // --- Serve the front-end ---------------------------------------------------
 // Expose everything inside /public to the browser. express.static automatically
@@ -36,23 +44,16 @@ const app = express();
 // straight to the matching file in /public.
 app.use(express.static(path.join(__dirname, "public")));
 
-/* ---------------------------------------------------------------------------
-   BACK-END MOUNT POINTS  (added in the back-end chats — nothing wired up yet)
-   ---------------------------------------------------------------------------
-   // 1. Read JSON request bodies (needed before any API route):
-   //      app.use(express.json());
-   //
-   // 2. Database connection:
-   //      const { connectDB } = require("./config/db");
-   //
-   // 3. API routes (one router per feature), e.g.:
-   //      app.use("/api/auth", require("./routes/authRoutes"));
-   //      app.use("/api/menu", require("./routes/menuRoutes"));
-   //
-   // 4. Central error handler (keep this LAST so it catches everything):
-   //      app.use((err, req, res, next) => { ... });
---------------------------------------------------------------------------- */
+// --- API routes --------------------------------------------------------------
+// One router per feature. Mounted AFTER static + json parsing, BEFORE the
+// error handler, so requests flow: static check → route match → error handler.
+app.use("/api/orders", require("./routes/orderRoutes"));
 
+// --- Central error handler ---------------------------------------------------
+// MUST be the LAST app.use() — Express only recognises a 4-arg function
+// (err, req, res, next) as an error handler, and it only catches errors from
+// middleware/routes registered BEFORE it.
+app.use(require("./middleware/errorHandler"));
 // --- Start the server ------------------------------------------------------
 // Use the PORT from the environment if set, otherwise default to 3000.
 const PORT = process.env.PORT || 3000;

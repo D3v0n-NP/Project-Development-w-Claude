@@ -41,5 +41,18 @@ function getPool() {
   }
   return poolPromise;
 }
+async function testConnection() {
+  try { 
+    const pool = await getPool(); 
+    await pool.request(). query("SELECT 1 AS ok");
+    console.log(`Database connected - ${dbConfig.database}@${dbConfig.server}`);
+  } catch (err) {
+    console.error("Database connection failed - server will not start.");
+    console.error(`Reason: ${err.message}`);
+    console.error("Check your .env file and ensure the database is running");
+    process.exit(1); // stop the process 
+  }
+}
 
-module.exports = { getPool, sql };
+
+module.exports = { getPool, testConnection, sql };
