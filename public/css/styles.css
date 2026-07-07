@@ -545,10 +545,6 @@ p { margin: 0 0 var(--space-4); }
 .login-brand__headline em { font-style: normal; color: var(--color-amber); }
 .login-brand__sub { color: rgba(255,255,255,0.8); max-width: 40ch; margin: 0 0 var(--space-8); }
 
-.login-brand__badge-wrap { display: flex; justify-content: center; margin: var(--space-8) 0; }
-/* gentle float on the badge (keeps the -4deg tilt from the base component) */
-.login-brand .grade-badge { animation: badge-float 6s ease-in-out infinite; }
-
 
 .login-brand__roles { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .login-chip {
@@ -595,11 +591,10 @@ p { margin: 0 0 var(--space-4); }
 .dev-links__row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
 /* motion / responsive */
-@media (prefers-reduced-motion: reduce) { .login-brand .grade-badge, .login-card { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .login-card { animation: none; } }
 @media (max-width: 860px) {
   .login { height: auto; min-height: 100vh; grid-template-columns: 1fr; overflow: visible; }
   .login-brand { padding: var(--space-12); }
-  .login-brand__badge-wrap { display: none; }
   .login-form-area { height: auto; overflow: visible; padding: var(--space-12) var(--space-6); }
 }
 

@@ -25,7 +25,7 @@
 // --- Dependencies ----------------------------------------------------------
 const express = require("express");          // the web-server framework
 const path = require("path");                // builds safe cross-OS file paths
-require("dotenv").config();                   // load .env (DB creds, JWT secret) before anything else needs them
+require("dotenv").config({ quiet: true});                   // load .env (DB creds, JWT secret) before anything else needs them
 
 // --- Create the app --------------------------------------------------------
 const app = express();

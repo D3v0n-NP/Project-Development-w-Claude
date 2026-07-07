@@ -1,8 +1,27 @@
 /* =============================================================================
    operator-centres.js — drives operator/centres.html (Centres CRUD).
+
+   BACK-END CONTRACT (see Hawker Centre Records Management, T5SA2-20)
+   --------------------------------------------------------------------------
+   GET    /api/hawker-centres        — public, list. Same endpoint the customer
+                                        side (centres.js) already documents —
+                                        do not fork into a second path.
+   GET    /api/hawker-centres/:id    — public, single centre detail.
+   POST   /api/hawker-centres        — operator-only (JWT + role check).
+   PUT    /api/hawker-centres/:id    — operator-only.
+   DELETE /api/hawker-centres/:id    — operator-only. Soft delete only
+                                        (sets is_active = 0) — never a hard
+                                        DELETE, since Stalls/Orders/Inspections
+                                        reference centreId by foreign key.
+
+   Request/response body shape (POST/PUT request, and each item in GET list):
+     { centreId, name, address, numCookedFoodStalls, status, photoUrl }
+   photoUrl is optional/nullable — this form doesn't collect it yet, so send
+   it as null on create; a future NEA sync (T5SA2-21) or upload feature can
+   populate it later without a schema change.
+
    Enhancements: status filter dropdown, wider Edit/Delete gap.
 ============================================================================= */
-
 let MOCK_CENTRES = [
   {
     centreId: 1,
